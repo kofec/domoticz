@@ -28,6 +28,7 @@ option(USE_BUILTIN_JWTCPP "Use builtin JWT-CPP" YES)
 
 # Optional dependencies
 option(USE_PYTHON "Use Python for Plugins and Event-Scripts" YES)
+option(USE_OPENZWAVE "Use OpenZWave as Hardware" YES)
 option(INCLUDE_LINUX_I2C "Include I2C support" YES)
 option(INCLUDE_SPI "Include SPI support" YES)
 option(WITH_LIBUSB "Enable libusb support" YES)
@@ -766,6 +767,7 @@ ENDIF(WITH_LIBUSB)
 # OpenZWave
 # try to find open-zwave, if found, include support
 #
+IF(USE_OPENZWAVE)
 IF(USE_STATIC_OPENZWAVE)
   find_library(OpenZWave NAMES libopenzwave.a HINTS "../open-zwave-read-only" "../open-zwave-read-only/cpp/build")
   get_filename_component(OpenZWave_dir ${OpenZWave} DIRECTORY)
@@ -794,6 +796,7 @@ IF(OpenZWave)
 ELSE()
   MESSAGE(STATUS "==== OpenZWave not found, support disabled!")
 ENDIF(OpenZWave)
+ENDIF(USE_OPENZWAVE)
 
 IF(EXISTS /sys/class/gpio OR FORCE_WITH_GPIO)
   message(STATUS "GPIO is available")
