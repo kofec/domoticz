@@ -361,6 +361,9 @@ dz_hardware_module(MATTER
   TYPES HTYPE_Matter
   SOURCES hardware/Matter.cpp
           hardware/ASyncWebsocket.cpp)
+dz_hardware_module(ENIGMA2
+  TYPES HTYPE_Enigma2
+  SOURCES hardware/Enigma2.cpp)
 
 set(_dzhw_built)
 set(_dzhw_skipped)
