@@ -159,6 +159,7 @@
 #include "../hardware/Enever.h"
 #include "../hardware/MitsubishiWF.h"
 #include "../hardware/Matter.h"
+#include "../hardware/Enigma2.h"
 
 // load notifications configuration
 #include "../notifications/NotificationHelper.h"
@@ -1320,6 +1321,9 @@ bool MainWorker::AddHardwareFromParams(
 		}
 		break;
 #endif
+	case HTYPE_Enigma2:
+		pHardware = new CEnigma2(ID, Address, Port, Username, Password, Mode1, Mode2, Mode3);
+		break;
 
 	default:
 		_log.Log(LOG_ERROR, "Hardware: %s (%s) not started, this hardware type is not included in this build", Name.c_str(), Hardware_Type_Desc(Type));
