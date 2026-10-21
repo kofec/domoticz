@@ -1325,7 +1325,7 @@ bool MainWorker::AddHardwareFromParams(
 #endif
 #ifdef WITH_HW_ENIGMA2
 	case HTYPE_Enigma2:
-		pHardware = new CEnigma2(ID, Address, Port, Username, Password, Mode1, Mode2, Mode3);
+		pHardware = new CEnigma2(ID, Address, Port, Username, Password, Mode1, Mode2, Mode3, Mode4);
 		break;
 #endif
 

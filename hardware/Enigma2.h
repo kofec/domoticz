@@ -11,7 +11,7 @@ class CEnigma2 : public CDomoticzHardwareBase
 {
       public:
 	CEnigma2(int ID, const std::string &IPAddress, unsigned short usIPPort, const std::string &username, const std::string &password, int pollInterval, int deepStandby,
-		 int channelName);
+		 int channelName, int monitorDevices);
 	~CEnigma2() override = default;
 
 	bool WriteToHardware(const char *pdata, unsigned char length) override;
@@ -21,6 +21,7 @@ class CEnigma2 : public CDomoticzHardwareBase
 	bool StopHardware() override;
 	void Do_Work();
 	void CreateDevices();
+	void CreateMonitorDevices();
 	void LogBoxInfo();
 	void Poll();
 	std::string GetChannelName();
@@ -36,6 +37,7 @@ class CEnigma2 : public CDomoticzHardwareBase
 	int m_iPollInterval;
 	bool m_bDeepStandby;
 	bool m_bChannelName;
+	bool m_bMonitorDevices;
 	bool m_bInfoLogged = false;
 	bool m_bWebIfDown = false;
 	std::string m_szLastChannel;
