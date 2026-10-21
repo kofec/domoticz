@@ -20,9 +20,35 @@
 // A box whose web interface is silent but which still answers ping (Enigma2 restarting) keeps its last state.
 //
 // Mode1: poll interval in seconds, Mode2: deep standby supported (0/1), Mode3: show channel name (0/1)
+// Mode4: nBox monitor devices (0/1) - units 3..13 for nbox_monitor.sh on the box, which pushes them with
+//        json.htm udevice; the hardware only creates them (same units as the Enigma2 Python plugin)
 
 #define ENIGMA2_UNIT_STATUS 1
 #define ENIGMA2_UNIT_SOURCE 2
+
+struct _tEnigma2MonitorUnit
+{
+	int unit;
+	const char *name;
+	int devType;
+	int subType;
+	const char *custom; // axis label of a custom sensor ("1;<label>")
+	const char *confVar; // variable in nbox_monitor.conf
+};
+
+static const _tEnigma2MonitorUnit Enigma2MonitorUnits[] = {
+	{ 3, "Last event", pTypeGeneral, sTypeTextStatus, nullptr, "DZ_ZDARZENIE" },
+	{ 4, "SNR", pTypeGeneral, sTypePercentage, nullptr, "DZ_SNR" },
+	{ 5, "Signal", pTypeGeneral, sTypePercentage, nullptr, "DZ_SILA" },
+	{ 6, "BER", pTypeGeneral, sTypeCustom, "1;", "DZ_BER" },
+	{ 7, "ECM time", pTypeGeneral, sTypeCustom, "1;ms", "DZ_ECM" },
+	{ 8, "OSCam errors", pTypeGeneral, sTypeCustom, "1;", "DZ_BLEDY" },
+	{ 9, "Root FS", pTypeGeneral, sTypePercentage, nullptr, "DZ_ROOTFS" },
+	{ 10, "HDD usage", pTypeGeneral, sTypePercentage, nullptr, "DZ_HDD" },
+	{ 11, "RAM", pTypeGeneral, sTypePercentage, nullptr, "DZ_RAM" },
+	{ 12, "CPU", pTypeGeneral, sTypePercentage, nullptr, "DZ_CPU" },
+	{ 13, "HDD temperature", pTypeTEMP, sTypeTEMP5, nullptr, "DZ_HDD_TEMP" },
+};
 
 #define ENIGMA2_POWER_DEEPSTANDBY 1
 #define ENIGMA2_POWER_REBOOT 2
@@ -33,12 +59,13 @@
 #define ENIGMA2_HTTP_TIMEOUT 4
 
 CEnigma2::CEnigma2(const int ID, const std::string &IPAddress, const unsigned short usIPPort, const std::string &username, const std::string &password, const int pollInterval,
-		   const int deepStandby, const int channelName)
+		   const int deepStandby, const int channelName, const int monitorDevices)
 	: m_szIPAddress(IPAddress)
 	, m_usIPPort(usIPPort ? usIPPort : 80)
 	, m_iPollInterval(pollInterval)
 	, m_bDeepStandby(deepStandby != 0)
 	, m_bChannelName(channelName != 0)
+	, m_bMonitorDevices(monitorDevices != 0)
 {
 	m_HwdID = ID;
 	if (m_iPollInterval < 10)
@@ -121,6 +148,43 @@ void CEnigma2::CreateDevices()
 			m_sql.safe_query("UPDATE DeviceStatus SET CustomImage=12 WHERE (ID==%" PRIu64 ")", idx);
 		}
 	}
+
+	if (m_bMonitorDevices)
+		CreateMonitorDevices();
+}
+
+// Created only when missing and never removed - switching the option off keeps the devices and their history
+void CEnigma2::CreateMonitorDevices()
+{
+	char szID[20];
+	std::string conf;
+	std::vector<std::vector<std::string>> result;
+
+	for (const auto &mon : Enigma2MonitorUnits)
+	{
+		result = m_sql.safe_query("SELECT ID FROM DeviceStatus WHERE (HardwareID==%d) AND (Unit==%d)", m_HwdID, mon.unit);
+		if (result.empty())
+		{
+			sprintf(szID, "%04X%04X", m_HwdID, mon.unit);
+			const char *sValue = (mon.subType == sTypeTextStatus) ? "" : "0";
+			uint64_t idx = m_sql.InsertDevice(m_HwdID, 0, szID, (unsigned char)mon.unit, (unsigned char)mon.devType, (unsigned char)mon.subType, 0, 0, sValue,
+							  m_Name + " - " + mon.name, 12, 255, 1);
+			if (idx == (uint64_t)-1)
+				continue;
+			if (mon.custom != nullptr)
+			{
+				std::map<std::string, std::string> options;
+				options["Custom"] = mon.custom;
+				m_sql.SetDeviceOptions(idx, options);
+			}
+			Log(LOG_STATUS, "nBox monitor device created: %s", mon.name);
+			result = m_sql.safe_query("SELECT ID FROM DeviceStatus WHERE (ID==%" PRIu64 ")", idx);
+		}
+		if (!result.empty())
+			conf += std::string(conf.empty() ? "" : " ") + mon.confVar + "=" + result[0][0];
+	}
+	// One line ready to paste into /root/nbox_monitor.conf on the box
+	Log(LOG_STATUS, "nbox_monitor.conf: %s", conf.c_str());
 }
 
 bool CEnigma2::GetXML(const std::string &endpoint, const long timeoutSec, TiXmlDocument &doc)
