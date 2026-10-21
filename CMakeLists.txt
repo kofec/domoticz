@@ -266,6 +266,7 @@ hardware/DomoticzTCP.cpp
 hardware/Dummy.cpp
 hardware/EcoCompteur.cpp
 hardware/EcoDevices.cpp
+hardware/Enigma2.cpp
 hardware/eHouseTCP.cpp
 hardware/eHouse/EhouseEvents.cpp
 hardware/eHouse/EhouseTcpClient.cpp
