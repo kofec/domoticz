@@ -32,8 +32,12 @@
 			<label for="monitorenigma2"><span data-i18n="nBox monitor devices">nBox monitor devices</span>: </label>
 		</td>
 		<td>
-			<input type="checkbox" id="monitorenigma2"><br>
-			<span data-i18n="Creates the sensors filled by nbox_monitor.sh on the box (signal, ECM, disk, RAM, CPU).">Creates the sensors filled by nbox_monitor.sh on the box (signal, ECM, disk, RAM, CPU).</span><br>
+			<select id="monitorenigma2" class="combobox ui-corner-all">
+				<option value="0" data-i18n="No">No</option>
+				<option value="1" data-i18n="Yes">Yes</option>
+				<option value="2" data-i18n="Yes, resources in collectd">Yes, resources in collectd</option>
+			</select><br>
+			<span data-i18n="Creates the sensors filled by nbox_monitor.sh on the box (signal, ECM, disk, RAM, CPU). With collectd on the box disk, RAM and CPU are left out.">Creates the sensors filled by nbox_monitor.sh on the box (signal, ECM, disk, RAM, CPU). With collectd on the box disk, RAM and CPU are left out.</span><br>
 		</td>
 	</tr>
 </table>
