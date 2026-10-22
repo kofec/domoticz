@@ -20,8 +20,9 @@
 // A box whose web interface is silent but which still answers ping (Enigma2 restarting) keeps its last state.
 //
 // Mode1: poll interval in seconds, Mode2: deep standby supported (0/1), Mode3: show channel name (0/1)
-// Mode4: nBox monitor devices (0/1) - units 3..13 for nbox_monitor.sh on the box, which pushes them with
-//        json.htm udevice; the hardware only creates them (same units as the Enigma2 Python plugin)
+// Mode4: nBox monitor devices - 0 none, 1 units 3..13, 2 units 3..8 (root FS, HDD, RAM, CPU and HDD temperature
+//        come from collectd on the box). nbox_monitor.sh pushes them with json.htm udevice; the hardware only
+//        creates them (same units as the Enigma2 Python plugin, whose Port field 1/2/3 means the same)
 
 #define ENIGMA2_UNIT_STATUS 1
 #define ENIGMA2_UNIT_SOURCE 2
@@ -50,6 +51,11 @@ static const _tEnigma2MonitorUnit Enigma2MonitorUnits[] = {
 	{ 13, "HDD temperature", pTypeTEMP, sTypeTEMP5, nullptr, "DZ_HDD_TEMP" },
 };
 
+#define ENIGMA2_MONITOR_NONE 0
+#define ENIGMA2_MONITOR_ALL 1
+#define ENIGMA2_MONITOR_NO_RESOURCES 2
+#define ENIGMA2_UNIT_FIRST_RESOURCE 9
+
 #define ENIGMA2_POWER_DEEPSTANDBY 1
 #define ENIGMA2_POWER_REBOOT 2
 #define ENIGMA2_POWER_RESTARTE2 3
@@ -65,7 +71,7 @@ CEnigma2::CEnigma2(const int ID, const std::string &IPAddress, const unsigned sh
 	, m_iPollInterval(pollInterval)
 	, m_bDeepStandby(deepStandby != 0)
 	, m_bChannelName(channelName != 0)
-	, m_bMonitorDevices(monitorDevices != 0)
+	, m_iMonitorDevices(monitorDevices)
 {
 	m_HwdID = ID;
 	if (m_iPollInterval < 10)
@@ -149,7 +155,7 @@ void CEnigma2::CreateDevices()
 		}
 	}
 
-	if (m_bMonitorDevices)
+	if (m_iMonitorDevices != ENIGMA2_MONITOR_NONE)
 		CreateMonitorDevices();
 }
 
@@ -162,6 +168,9 @@ void CEnigma2::CreateMonitorDevices()
 
 	for (const auto &mon : Enigma2MonitorUnits)
 	{
+		// left out of the nbox_monitor.conf line too, so the script stops pushing them
+		if ((m_iMonitorDevices == ENIGMA2_MONITOR_NO_RESOURCES) && (mon.unit >= ENIGMA2_UNIT_FIRST_RESOURCE))
+			continue;
 		result = m_sql.safe_query("SELECT ID FROM DeviceStatus WHERE (HardwareID==%d) AND (Unit==%d)", m_HwdID, mon.unit);
 		if (result.empty())
 		{
