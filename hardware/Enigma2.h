@@ -37,7 +37,7 @@ class CEnigma2 : public CDomoticzHardwareBase
 	int m_iPollInterval;
 	bool m_bDeepStandby;
 	bool m_bChannelName;
-	bool m_bMonitorDevices;
+	int m_iMonitorDevices;
 	bool m_bInfoLogged = false;
 	bool m_bWebIfDown = false;
 	std::string m_szLastChannel;

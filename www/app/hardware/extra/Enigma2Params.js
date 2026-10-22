@@ -9,7 +9,7 @@ extraHWInitParams = function (data) {
 	$('#hardwarecontent #divextrahwparams #updatefrequencyenigma2').val(data["Mode1"]);
 	$('#hardwarecontent #divextrahwparams #deepstandbyenigma2').prop('checked', data["Mode2"] == 1);
 	$('#hardwarecontent #divextrahwparams #channelnameenigma2').prop('checked', data["Mode3"] == 1);
-	$('#hardwarecontent #divextrahwparams #monitorenigma2').prop('checked', data["Mode4"] == 1);
+	$('#hardwarecontent #divextrahwparams #monitorenigma2').val((data["Mode4"] == 1 || data["Mode4"] == 2) ? data["Mode4"] : 0);
 	$("#hardwarecontent #divremote #tcpaddress").val(data["Address"] ? data["Address"] : "");
 	$("#hardwarecontent #divremote").show();
 	$("#hardwarecontent #divlogin").show();
@@ -20,7 +20,7 @@ extraHWUpdateParams = function(validators) {
 	data["Mode1"] = $("#hardwarecontent #divextrahwparams #updatefrequencyenigma2").val();
 	data["Mode2"] = $("#hardwarecontent #divextrahwparams #deepstandbyenigma2").is(":checked") ? 1 : 0;
 	data["Mode3"] = $("#hardwarecontent #divextrahwparams #channelnameenigma2").is(":checked") ? 1 : 0;
-	data["Mode4"] = $("#hardwarecontent #divextrahwparams #monitorenigma2").is(":checked") ? 1 : 0;
+	data["Mode4"] = $("#hardwarecontent #divextrahwparams #monitorenigma2").val();
 	if(!extraHWValidateParams(data, validators))
 		return false;
 	return data;
