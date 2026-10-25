@@ -364,6 +364,9 @@ dz_hardware_module(MATTER
 dz_hardware_module(ENIGMA2
   TYPES HTYPE_Enigma2
   SOURCES hardware/Enigma2.cpp)
+dz_hardware_module(TUYALAN
+  TYPES HTYPE_TuyaLocal
+  SOURCES hardware/TuyaCloud.cpp hardware/TuyaLan.cpp hardware/TuyaLocal.cpp)
 
 set(_dzhw_built)
 set(_dzhw_skipped)
