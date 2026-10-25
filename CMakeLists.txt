@@ -267,6 +267,9 @@ hardware/Dummy.cpp
 hardware/EcoCompteur.cpp
 hardware/EcoDevices.cpp
 hardware/Enigma2.cpp
+hardware/TuyaCloud.cpp
+hardware/TuyaLan.cpp
+hardware/TuyaLocal.cpp
 hardware/eHouseTCP.cpp
 hardware/eHouse/EhouseEvents.cpp
 hardware/eHouse/EhouseTcpClient.cpp

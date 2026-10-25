@@ -226,6 +226,7 @@ enum _eHardwareTypes {
 	HTYPE_MitsubishiWF,			//128
 	HTYPE_Matter,				//129
 	HTYPE_Enigma2,				//130
+	HTYPE_TuyaLocal,				//131
 	HTYPE_END
 };
 

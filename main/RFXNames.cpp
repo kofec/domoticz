@@ -287,6 +287,7 @@ static const STR_TABLE_SINGLE HardwareTypeTable[] = {
 	{ HTYPE_OpenMeteo, "Open-Meteo (Weather Lookup)", "OpenMeteo" },
 	{ HTYPE_Matter, "Matter (python-matterjs-server)", "Matter" },
 	{ HTYPE_Enigma2, "Enigma2 receiver", "Enigma2" },
+	{ HTYPE_TuyaLocal, "TinyTuya (Cloud)", "TinyTuya" },
 	{ 0, nullptr, nullptr },
 };
 
@@ -4071,6 +4072,7 @@ bool IsNetworkDevice(const _eHardwareTypes htype)
 	case HTYPE_MitsubishiWF:
 	case HTYPE_Matter:
 	case HTYPE_Enigma2:
+	case HTYPE_TuyaLocal:
 		return true;
 	default:
 		return false;
