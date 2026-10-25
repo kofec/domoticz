@@ -14,6 +14,7 @@ define(['app'], function (app) {
 		'RFLink Gateway MQTT': ['MQTTParams', 4],
 		'Tado Thermostat': 'TadoParams',
 		'Enigma2 receiver': 'Enigma2Params',
+				'TinyTuya (Cloud)': 'TuyaLocalParams',
 	};
 
 	app.controller('HardwareController', function ($scope, $rootScope, $timeout, $http) {

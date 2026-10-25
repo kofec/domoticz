@@ -162,6 +162,9 @@
 #ifdef WITH_HW_ENIGMA2
 #include "../hardware/Enigma2.h"
 #endif
+#ifdef WITH_HW_TUYALAN
+#include "../hardware/TuyaLocal.h"
+#endif
 
 // load notifications configuration
 #include "../notifications/NotificationHelper.h"
@@ -1326,6 +1329,11 @@ bool MainWorker::AddHardwareFromParams(
 #ifdef WITH_HW_ENIGMA2
 	case HTYPE_Enigma2:
 		pHardware = new CEnigma2(ID, Address, Port, Username, Password, Mode1, Mode2, Mode3, Mode4);
+		break;
+#endif
+#ifdef WITH_HW_TUYALAN
+	case HTYPE_TuyaLocal:
+		pHardware = new CTuyaLocal(ID, Username, Password, Extra, Mode1, Mode2, Mode3, Mode4);
 		break;
 #endif
 
