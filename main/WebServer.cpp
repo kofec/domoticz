@@ -337,18 +337,32 @@ namespace http
 
 			// End of 'Pages' to be moved...
 
+#ifdef WITH_HW_RFXCOM
 			m_pWebEm->RegisterActionCode("setrfxcommode", [this](auto&& session, auto&& req, auto&& redirect_uri) { SetRFXCOMMode(session, req, redirect_uri); });
+#endif
+#ifdef WITH_HW_REGO6XX
 			m_pWebEm->RegisterActionCode("setrego6xxtype", [this](auto&& session, auto&& req, auto&& redirect_uri) { SetRego6XXType(session, req, redirect_uri); });
+#endif
+#ifdef WITH_HW_S0METER
 			m_pWebEm->RegisterActionCode("sets0metertype", [this](auto&& session, auto&& req, auto&& redirect_uri) { SetS0MeterType(session, req, redirect_uri); });
+#endif
+#ifdef WITH_HW_LIMITLESS
 			m_pWebEm->RegisterActionCode("setlimitlesstype", [this](auto&& session, auto&& req, auto&& redirect_uri) { SetLimitlessType(session, req, redirect_uri); });
+#endif
 
 			m_pWebEm->RegisterActionCode("uploadfloorplanimage", [this](auto&& session, auto&& req, auto&& redirect_uri) { UploadFloorplanImage(session, req, redirect_uri); });
 
+#ifdef WITH_HW_OTGW
 			m_pWebEm->RegisterActionCode("setopenthermsettings", [this](auto&& session, auto&& req, auto&& redirect_uri) { SetOpenThermSettings(session, req, redirect_uri); });
+#endif
 
+#ifdef WITH_HW_PIFACE
 			m_pWebEm->RegisterActionCode("reloadpiface", [this](auto&& session, auto&& req, auto&& redirect_uri) { ReloadPiFace(session, req, redirect_uri); });
+#endif
 			m_pWebEm->RegisterActionCode("restoredatabase", [this](auto&& session, auto&& req, auto&& redirect_uri) { RestoreDatabase(session, req, redirect_uri); });
+#ifdef WITH_HW_SBFSPOT
 			m_pWebEm->RegisterActionCode("sbfspotimportolddata", [this](auto&& session, auto&& req, auto&& redirect_uri) { SBFSpotImportOldData(session, req, redirect_uri); });
+#endif
 
 			// Passkey/WebAuthn commands (bypass authentication - needed during login)
 			RegisterCommandCode("passkeylogin-begin", [this](auto&& session, auto&& req, auto&& root) { Cmd_PasskeyLoginBegin(session, req, root); }, URIGHTS_VIEWER, true);
@@ -379,7 +393,9 @@ namespace http
 			RegisterCommandCode("setupwizardcreateadmin", [this](auto&& session, auto&& req, auto&& root) { Cmd_SetupWizardCreateAdmin(session, req, root); }, URIGHTS_VIEWER, true);
 
 			// Commands that require authentication
+#ifdef WITH_HW_OTGW
 			RegisterCommandCode("sendopenthermcommand", [this](auto&& session, auto&& req, auto&& root) { Cmd_SendOpenThermCommand(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 			RegisterCommandCode("storesettings", [this](auto&& session, auto&& req, auto&& root) { Cmd_PostSettings(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("getlog", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetLog(session, req, root); }, URIGHTS_ADMIN);
@@ -402,11 +418,13 @@ namespace http
 			RegisterCommandCode("createaccesstoken", [this](auto&& session, auto&& req, auto&& root) { Cmd_CreateAccessToken(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("deleteaccesstoken", [this](auto&& session, auto&& req, auto&& root) { Cmd_DeleteAccessToken(session, req, root); }, URIGHTS_ADMIN);
 
+#ifdef WITH_HW_WOL
 			RegisterCommandCode("wolgetnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_WOLGetNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("woladdnode", [this](auto&& session, auto&& req, auto&& root) { Cmd_WOLAddNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("wolupdatenode", [this](auto&& session, auto&& req, auto&& root) { Cmd_WOLUpdateNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("wolremovenode", [this](auto&& session, auto&& req, auto&& root) { Cmd_WOLRemoveNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("wolclearnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_WOLClearNodes(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 			RegisterCommandCode("mysensorsgetnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_MySensorsGetNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("mysensorsgetchilds", [this](auto&& session, auto&& req, auto&& root) { Cmd_MySensorsGetChilds(session, req, root); }, URIGHTS_ADMIN);
@@ -415,13 +433,16 @@ namespace http
 			RegisterCommandCode("mysensorsremovechild", [this](auto&& session, auto&& req, auto&& root) { Cmd_MySensorsRemoveChild(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("mysensorsupdatechild", [this](auto&& session, auto&& req, auto&& root) { Cmd_MySensorsUpdateChild(session, req, root); }, URIGHTS_ADMIN);
 
+#ifdef WITH_HW_PINGER
 			RegisterCommandCode("pingersetmode", [this](auto&& session, auto&& req, auto&& root) { Cmd_PingerSetMode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("pingergetnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_PingerGetNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("pingeraddnode", [this](auto&& session, auto&& req, auto&& root) { Cmd_PingerAddNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("pingerupdatenode", [this](auto&& session, auto&& req, auto&& root) { Cmd_PingerUpdateNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("pingerremovenode", [this](auto&& session, auto&& req, auto&& root) { Cmd_PingerRemoveNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("pingerclearnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_PingerClearNodes(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
+#ifdef WITH_HW_KODI
 			RegisterCommandCode("kodisetmode", [this](auto&& session, auto&& req, auto&& root) { Cmd_KodiSetMode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("kodigetnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_KodiGetNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("kodiaddnode", [this](auto&& session, auto&& req, auto&& root) { Cmd_KodiAddNode(session, req, root); }, URIGHTS_ADMIN);
@@ -429,7 +450,9 @@ namespace http
 			RegisterCommandCode("kodiremovenode", [this](auto&& session, auto&& req, auto&& root) { Cmd_KodiRemoveNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("kodiclearnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_KodiClearNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("kodimediacommand", [this](auto&& session, auto&& req, auto&& root) { Cmd_KodiMediaCommand(session, req, root); }, URIGHTS_SWITCHER);
+#endif
 
+#ifdef WITH_HW_PANASONICTV
 			RegisterCommandCode("panasonicsetmode", [this](auto&& session, auto&& req, auto&& root) { Cmd_PanasonicSetMode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("panasonicgetnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_PanasonicGetNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("panasonicaddnode", [this](auto&& session, auto&& req, auto&& root) { Cmd_PanasonicAddNode(session, req, root); }, URIGHTS_ADMIN);
@@ -437,7 +460,9 @@ namespace http
 			RegisterCommandCode("panasonicremovenode", [this](auto&& session, auto&& req, auto&& root) { Cmd_PanasonicRemoveNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("panasonicclearnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_PanasonicClearNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("panasonicmediacommand", [this](auto&& session, auto&& req, auto&& root) { Cmd_PanasonicMediaCommand(session, req, root); }, URIGHTS_SWITCHER);
+#endif
 
+#ifdef WITH_HW_MATTER
 			RegisterCommandCode("getmatternodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetMatterNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("getmatternetworkgraph", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetMatterNetworkGraph(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("mattercommissionnode", [this](auto&& session, auto&& req, auto&& root) { Cmd_MatterCommissionNode(session, req, root); }, URIGHTS_ADMIN);
@@ -449,12 +474,18 @@ namespace http
 			RegisterCommandCode("mattersetwificredentials", [this](auto&& session, auto&& req, auto&& root) { Cmd_MatterSetWifiCredentials(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("mattersetthreaddataset",   [this](auto&& session, auto&& req, auto&& root) { Cmd_MatterSetThreadDataset(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("mattersetfabriclabel",     [this](auto&& session, auto&& req, auto&& root) { Cmd_MatterSetFabricLabel(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
+#ifdef WITH_HW_HEOS
 			RegisterCommandCode("heossetmode", [this](auto&& session, auto&& req, auto&& root) { Cmd_HEOSSetMode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("heosmediacommand", [this](auto&& session, auto&& req, auto&& root) { Cmd_HEOSMediaCommand(session, req, root); }, URIGHTS_SWITCHER);
+#endif
 
+#ifdef WITH_HW_ONKYOAV
 			RegisterCommandCode("onkyoeiscpcommand", [this](auto&& session, auto&& req, auto&& root) { Cmd_OnkyoEiscpCommand(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
+#ifdef WITH_HW_BLEBOX
 			RegisterCommandCode("bleboxsetmode", [this](auto&& session, auto&& req, auto&& root) { Cmd_BleBoxSetMode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("bleboxgetnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_BleBoxGetNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("bleboxaddnode", [this](auto&& session, auto&& req, auto&& root) { Cmd_BleBoxAddNode(session, req, root); }, URIGHTS_ADMIN);
@@ -462,12 +493,15 @@ namespace http
 			RegisterCommandCode("bleboxclearnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_BleBoxClearNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("bleboxautosearchingnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_BleBoxAutoSearchingNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("bleboxupdatefirmware", [this](auto&& session, auto&& req, auto&& root) { Cmd_BleBoxUpdateFirmware(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
+#ifdef WITH_HW_LOGITECHMEDIASERVER
 			RegisterCommandCode("lmssetmode", [this](auto&& session, auto&& req, auto&& root) { Cmd_LMSSetMode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("lmsgetnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_LMSGetNodes(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("lmsgetplaylists", [this](auto&& session, auto&& req, auto&& root) { Cmd_LMSGetPlaylists(session, req, root); }, URIGHTS_SWITCHER);
 			RegisterCommandCode("lmsmediacommand", [this](auto&& session, auto&& req, auto&& root) { Cmd_LMSMediaCommand(session, req, root); }, URIGHTS_SWITCHER);
 			RegisterCommandCode("lmsdeleteunuseddevices", [this](auto&& session, auto&& req, auto&& root) { Cmd_LMSDeleteUnusedDevices(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 			RegisterCommandCode("savefibarolinkconfig", [this](auto&& session, auto&& req, auto&& root) { Cmd_SaveFibaroLinkConfig(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("getfibarolinkconfig", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetFibaroLinkConfig(session, req, root); }, URIGHTS_ADMIN);
@@ -584,7 +618,9 @@ namespace http
 			RegisterCommandCode("devices_list", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetDevicesList(session, req, root); });
 			RegisterCommandCode("devices_list_onoff", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetDevicesListOnOff(session, req, root); });
 
+#ifdef WITH_HW_PHILIPSHUE
 			RegisterCommandCode("registerhue", [this](auto&& session, auto&& req, auto&& root) { Cmd_PhilipsHueRegister(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 			RegisterCommandCode("getcustomiconset", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetCustomIconSet(session, req, root); });
 			RegisterCommandCode("uploadcustomicon", [this](auto&& session, auto&& req, auto&& root) { Cmd_UploadCustomIcon(session, req, root); }, URIGHTS_ADMIN);
@@ -611,11 +647,17 @@ namespace http
 			RegisterCommandCode("updatemobiledevice", [this](auto&& session, auto&& req, auto&& root) { Cmd_UpdateMobileDevice(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("deletemobiledevice", [this](auto&& session, auto&& req, auto&& root) { Cmd_DeleteMobileDevice(session, req, root); }, URIGHTS_ADMIN);
 
+#ifdef WITH_HW_YEELIGHT
 			RegisterCommandCode("addyeelight", [this](auto&& session, auto&& req, auto&& root) { Cmd_AddYeeLight(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
+#ifdef WITH_HW_ARILUX
 			RegisterCommandCode("addArilux", [this](auto&& session, auto&& req, auto&& root) { Cmd_AddArilux(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
+#ifdef WITH_HW_TELLSTICK
 			RegisterCommandCode("tellstickApplySettings", [this](auto&& session, auto&& req, auto&& root) { Cmd_TellstickApplySettings(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 			// Migrated RTypes to regular commands
 			RegisterCommandCode("getusers", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetUsers(session, req, root); }, URIGHTS_ADMIN);
@@ -653,9 +695,13 @@ namespace http
 			RegisterCommandCode("gettextlog", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetTextLog(session, req, root); });
 			RegisterCommandCode("gettransfers", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetTransfers(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("dotransferdevice", [this](auto&& session, auto&& req, auto&& root) { Cmd_DoTransferDevice(session, req, root); }, URIGHTS_ADMIN);
+#ifdef WITH_HW_RFLINK
 			RegisterCommandCode("createrflinkdevice", [this](auto&& session, auto&& req, auto&& root) { Cmd_CreateRFLinkDevice(session, req, root); }, URIGHTS_ADMIN);
+#endif
 			RegisterCommandCode("createevohomesensor", [this](auto&& session, auto&& req, auto&& root) { Cmd_CreateEvohomeSensor(session, req, root); }, URIGHTS_ADMIN);
+#ifdef WITH_HW_EVOHOME
 			RegisterCommandCode("bindevohome", [this](auto&& session, auto&& req, auto&& root) { Cmd_BindEvohome(session, req, root); }, URIGHTS_ADMIN);
+#endif
 			RegisterCommandCode("custom_light_icons", [this](auto&& session, auto&& req, auto&& root) { Cmd_CustomLightIcons(session, req, root); });
 			RegisterCommandCode("deletedevice", [this](auto&& session, auto&& req, auto&& root) { Cmd_DeleteDevice(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("graph", [this](auto&& session, auto&& req, auto&& root) { Cmd_HandleGraph(session, req, root); });
@@ -663,7 +709,9 @@ namespace http
 			RegisterCommandCode("setused", [this](auto&& session, auto&& req, auto&& root) { Cmd_SetUsed(session, req, root); }, URIGHTS_ADMIN);
 
 			// Migrated ActionCodes to regular commands
+#ifdef WITH_HW_CURRENTCOST
 			RegisterCommandCode("setccmetertype", [this](auto&& session, auto&& req, auto&& root) { Cmd_SetCurrentCostUSBType(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 			//Shared User Devices
 			RegisterCommandCode("getshareduserdevices", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetSharedUserDevices(session, req, root); }, URIGHTS_ADMIN);
@@ -676,9 +724,11 @@ namespace http
 			RegisterCommandCode("clearsharedmqttdevices", [this](auto&& session, auto&& req, auto&& root) { Cmd_ClearSharedMQTTDevices(session, req, root); }, URIGHTS_ADMIN);
 
 			//MQTT-AD
+#ifdef WITH_HW_MQTTAUTODISCOVERY
 			RegisterCommandCode("mqttadgetconfig", [this](auto&& session, auto&& req, auto&& root) { Cmd_MQTTAD_GetConfig(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("mqttupdatenumber", [this](auto&& session, auto&& req, auto&& root) { Cmd_MQTTAD_UpdateNumber(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("mqttpublishpayload", [this](auto&& session, auto&& req, auto&& root) { Cmd_MQTTAD_PublishPayload(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 #ifdef WITH_OPENZWAVE
 			// ZWave
@@ -736,20 +786,28 @@ namespace http
 #endif
 
 			// EnOcean helpers cmds
+#ifdef WITH_HW_ENOCEAN
 			RegisterCommandCode("enoceangetmanufacturers", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanGetManufacturers(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("enoceangetrorgs", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanGetRORGs(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("enoceangetprofiles", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanGetProfiles(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 			// EnOcean ESP3 cmds
+#ifdef WITH_HW_ENOCEAN
 			RegisterCommandCode("esp3enablelearnmode", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanESP3EnableLearnMode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("esp3isnodeteachedin", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanESP3IsNodeTeachedIn(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("esp3cancelteachin", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanESP3CancelTeachIn(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
+#ifdef WITH_HW_ENOCEAN
 			RegisterCommandCode("esp3controllerreset", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanESP3ControllerReset(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
+#ifdef WITH_HW_ENOCEAN
 			RegisterCommandCode("esp3updatenode", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanESP3UpdateNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("esp3deletenode", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanESP3DeleteNode(session, req, root); }, URIGHTS_ADMIN);
 			RegisterCommandCode("esp3getnodes", [this](auto&& session, auto&& req, auto&& root) { Cmd_EnOceanESP3GetNodes(session, req, root); }, URIGHTS_ADMIN);
+#endif
 
 			//Dynamic Price
 			RegisterCommandCode("getdynamicpricedevices", [this](auto&& session, auto&& req, auto&& root) { Cmd_GetDynamicPriceDevices(session, req, root); }, URIGHTS_ADMIN);
@@ -1875,66 +1933,80 @@ namespace http
 						}
 						else if (pHardware->HwdType == HTYPE_Wunderground)
 						{
+#ifdef WITH_HW_WUNDERGROUND
 							CWunderground* pWHardware = dynamic_cast<CWunderground*>(pHardware);
 							std::string forecast_url = pWHardware->GetForecastURL();
 							if (!forecast_url.empty())
 							{
 								root["result"][ii]["forecast_url"] = base64_encode(forecast_url);
 							}
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_DarkSky)
 						{
+#ifdef WITH_HW_DARKSKY
 							CDarkSky* pWHardware = dynamic_cast<CDarkSky*>(pHardware);
 							std::string forecast_url = pWHardware->GetForecastURL();
 							if (!forecast_url.empty())
 							{
 								root["result"][ii]["forecast_url"] = base64_encode(forecast_url);
 							}
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_VisualCrossing)
 						{
+#ifdef WITH_HW_VISUALCROSSING
 							CVisualCrossing* pWHardware = dynamic_cast<CVisualCrossing*>(pHardware);
 							std::string forecast_url = pWHardware->GetForecastURL();
 							if (!forecast_url.empty())
 							{
 								root["result"][ii]["forecast_url"] = base64_encode(forecast_url);
 							}
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_AccuWeather)
 						{
+#ifdef WITH_HW_ACCUWEATHER
 							CAccuWeather* pWHardware = dynamic_cast<CAccuWeather*>(pHardware);
 							std::string forecast_url = pWHardware->GetForecastURL();
 							if (!forecast_url.empty())
 							{
 								root["result"][ii]["forecast_url"] = base64_encode(forecast_url);
 							}
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_OpenWeatherMap)
 						{
+#ifdef WITH_HW_OPENWEATHERMAP
 							COpenWeatherMap* pWHardware = dynamic_cast<COpenWeatherMap*>(pHardware);
 							std::string forecast_url = pWHardware->GetForecastURL();
 							if (!forecast_url.empty())
 							{
 								root["result"][ii]["forecast_url"] = base64_encode(forecast_url);
 							}
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_BuienRadar)
 						{
+#ifdef WITH_HW_BUIENRADAR
 							CBuienRadar* pWHardware = dynamic_cast<CBuienRadar*>(pHardware);
 							std::string forecast_url = pWHardware->GetForecastURL();
 							if (!forecast_url.empty())
 							{
 								root["result"][ii]["forecast_url"] = base64_encode(forecast_url);
 							}
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_Meteorologisk)
 						{
+#ifdef WITH_HW_METEOROLOGISK
 							CMeteorologisk* pWHardware = dynamic_cast<CMeteorologisk*>(pHardware);
 							std::string forecast_url = pWHardware->GetForecastURL();
 							if (!forecast_url.empty())
 							{
 								root["result"][ii]["forecast_url"] = base64_encode(forecast_url);
 							}
+#endif
 						}
 					}
 

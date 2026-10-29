@@ -1239,16 +1239,21 @@ namespace http
 						unsigned long rID = 0;
 						if (pBaseHardware->HwdType == HTYPE_EnOceanESP2)
 						{
+#ifdef WITH_HW_ENOCEAN
 							CEnOceanESP2* pEnoceanHardware = dynamic_cast<CEnOceanESP2*>(pBaseHardware);
 							rID = pEnoceanHardware->m_id_base + iUnitTest;
+#endif
 						}
 						else if (pBaseHardware->HwdType == HTYPE_EnOceanESP3)
 						{
+#ifdef WITH_HW_ENOCEAN
 							CEnOceanESP3* pEnoceanHardware = dynamic_cast<CEnOceanESP3*>(pBaseHardware);
 							rID = pEnoceanHardware->m_id_base + iUnitTest;
+#endif
 						}
 						else if (pBaseHardware->HwdType == HTYPE_USBtinGateway) // Like EnOcean (Lighting2 with Base_ID offset)
 						{
+#ifdef WITH_HW_USBTIN
 							USBtin* pUSBtinHardware = dynamic_cast<USBtin*>(pBaseHardware);
 							// base ID calculate in the USBtinharwade dependant of the CAN Layer !
 							// for exemple see MultiblocV8 layer...
@@ -1256,6 +1261,7 @@ namespace http
 							std::stringstream ssunitcode;
 							ssunitcode << iUnitTest;
 							sunitcode = ssunitcode.str();
+#endif
 						}
 						else
 							return false;
@@ -1939,6 +1945,7 @@ namespace http
 						unsigned long rID = 0;
 						if (pBaseHardware->HwdType == HTYPE_EnOceanESP2)
 						{
+#ifdef WITH_HW_ENOCEAN
 							CEnOceanESP2* pEnoceanHardware = dynamic_cast<CEnOceanESP2*>(pBaseHardware);
 							if (pEnoceanHardware->m_id_base == 0)
 							{
@@ -1947,9 +1954,11 @@ namespace http
 								return false;
 							}
 							rID = pEnoceanHardware->m_id_base + iUnitTest;
+#endif
 						}
 						else if (pBaseHardware->HwdType == HTYPE_EnOceanESP3)
 						{
+#ifdef WITH_HW_ENOCEAN
 							CEnOceanESP3* pEnoceanHardware = dynamic_cast<CEnOceanESP3*>(pBaseHardware);
 							if (pEnoceanHardware->m_id_base == 0)
 							{
@@ -1963,14 +1972,17 @@ namespace http
 							// So it will appear in EnOcean hardware setup screen
 
 							pEnoceanHardware->TeachInVirtualNode(rID, enocean::RORG_RPS, 0x02, 0x01);
+#endif
 						}
 						else if (pBaseHardware->HwdType == HTYPE_USBtinGateway)
 						{
+#ifdef WITH_HW_USBTIN
 							USBtin* pUSBtinHardware = dynamic_cast<USBtin*>(pBaseHardware);
 							rID = pUSBtinHardware->switch_id_base;
 							std::stringstream ssunitcode;
 							ssunitcode << iUnitTest;
 							sunitcode = ssunitcode.str();
+#endif
 						}
 						else
 							return false;
