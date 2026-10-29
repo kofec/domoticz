@@ -473,7 +473,11 @@ IF(USE_BUILTIN_JWTCPP)
   endif()
 ENDIF()
 
-add_subdirectory(extern/libwebem)
+IF(USE_BUILTIN_LIBWEBEM)
+  add_subdirectory(extern/libwebem)
+ELSE()
+  find_package(webem REQUIRED)
+ENDIF()
 
 add_executable(domoticz ${domoticz_SRCS})
 target_link_libraries(domoticz webem)
