@@ -1305,7 +1305,7 @@ bool MySensorsBase::SendNodeSetCommandImpl(const int NodeID, const int ChildID, 
 	m_AckChildID = ChildID;
 	m_AckSetType = SubType;
 	int repeat = 0;
-	int repeats = 2;
+	int repeats = 5;
 
 	//Resend failed command
 	while ((!m_bAckReceived) && (repeat < repeats))
