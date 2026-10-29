@@ -225,8 +225,12 @@ enum _eHardwareTypes {
 	HTYPE_VisualCrossing,		//127
 	HTYPE_MitsubishiWF,			//128
 	HTYPE_Matter,				//129
-	HTYPE_Enigma2,				//130
-	HTYPE_TuyaLocal,				//131
+	// Out-of-tree types (kofec/domoticz openwrt branch): fixed numbers far
+	// above upstream, so the value stored in Hardware.Type does not move
+	// when upstream appends new types above. New upstream types go before
+	// this block.
+	HTYPE_Enigma2 = 230,		//230
+	HTYPE_TuyaLocal = 231,		//231
 	HTYPE_END
 };
 
