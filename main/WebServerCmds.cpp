@@ -1452,7 +1452,9 @@ namespace http
 				if (bDoAdd)
 				{
 					std::string description = Hardware_Type_Desc(ii);
-					if (!description.empty())
+					// "Unknown" = unused number in the gap below the
+					// out-of-tree types (RFXNames.h)
+					if (!description.empty() && (description != "Unknown"))
 						_htypes[description] = ii;
 				}
 			}
