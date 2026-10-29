@@ -29,8 +29,12 @@ bool CNotificationLogitechMediaServer::SendMessageImplementation(
 		sSubject = Subject;
 	}
 
+#ifdef WITH_HW_LOGITECHMEDIASERVER
 	CDomoticzHardwareBase *pHardware = m_mainworker.GetHardwareByType(HTYPE_LogitechMediaServer);
 	CLogitechMediaServer* pLMS = dynamic_cast<CLogitechMediaServer*>(pHardware);
+#else
+	CDomoticzHardwareBase *pHardware = nullptr;
+#endif
 
 	if (pHardware == nullptr)
 	{
@@ -44,10 +48,12 @@ bool CNotificationLogitechMediaServer::SendMessageImplementation(
 	std::vector<std::string> results;
 	StringSplit(_PlayerMac, ";", results);
 
+#ifdef WITH_HW_LOGITECHMEDIASERVER
 	for (const auto &sPlayerId : results)
 	{
 		pLMS->SendText(sPlayerId, sSubject, Text, _Duration);
 	}
+#endif
 	return true;
 }
 

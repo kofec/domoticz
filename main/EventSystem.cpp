@@ -3922,6 +3922,7 @@ bool CEventSystem::ScheduleEvent(int deviceID, const std::string &Action, bool i
 		CDomoticzHardwareBase *pBaseHardware = m_mainworker.GetHardwareByType(HTYPE_Kodi);
 		if (pBaseHardware != nullptr)
 		{
+#ifdef WITH_HW_KODI
 			CKodi			*pHardware = dynamic_cast<CKodi*>(pBaseHardware);
 			std::string		sPlayList = sParams;
 			size_t			iLastSpace = sParams.find_last_of(' ', sParams.length());
@@ -3935,6 +3936,7 @@ bool CEventSystem::ScheduleEvent(int deviceID, const std::string &Action, bool i
 			{
 				pBaseHardware = nullptr; // Kodi hardware exists, but the device for the event is not a Kodi
 			}
+#endif
 		}
 
 		if (pBaseHardware == nullptr) // if not handled try Logitech
@@ -3942,12 +3944,14 @@ bool CEventSystem::ScheduleEvent(int deviceID, const std::string &Action, bool i
 			pBaseHardware = m_mainworker.GetHardwareByType(HTYPE_LogitechMediaServer);
 			if (pBaseHardware == nullptr)
 				return false;
+#ifdef WITH_HW_LOGITECHMEDIASERVER
 			CLogitechMediaServer *pHardware = dynamic_cast<CLogitechMediaServer*>(pBaseHardware);
 
 			int iPlaylistID = pHardware->GetPlaylistRefID(oParseResults.sCommand.substr(14));
 			if (iPlaylistID == 0) return false;
 
 			level = iPlaylistID;
+#endif
 		}
 		oParseResults.sCommand = oParseResults.sCommand.substr(0, 13);
 	}
@@ -3979,8 +3983,10 @@ bool CEventSystem::ScheduleEvent(int deviceID, const std::string &Action, bool i
 		CDomoticzHardwareBase *pBaseHardware = m_mainworker.GetHardwareByType(HTYPE_Kodi);
 		if (pBaseHardware != nullptr)
 		{
+#ifdef WITH_HW_KODI
 			CKodi	*pHardware = dynamic_cast<CKodi*>(pBaseHardware);
 			pHardware->SetExecuteCommand(deviceID, sParams);
+#endif
 		}
 	}
 

@@ -444,6 +444,9 @@ tinyxpath/xpath_static.cpp
 tinyxpath/xpath_syntax.cpp
 )
 
+# Optional hardware drivers (INCLUDE_HARDWARE_ALL / INCLUDE_HARDWARE_<NAME>)
+include(cmake/HardwareModules.cmake)
+
 # Create dependency targets BEFORE libwebem so it finds them via parent scope
 # (jsoncpp, minizip, jwt-cpp are also linked to domoticz later in this file)
 IF(USE_BUILTIN_JSONCPP)
@@ -802,7 +805,7 @@ ELSE()
 ENDIF(OpenZWave)
 ENDIF(USE_OPENZWAVE)
 
-IF(EXISTS /sys/class/gpio OR FORCE_WITH_GPIO)
+IF((EXISTS /sys/class/gpio OR FORCE_WITH_GPIO) AND INCLUDE_HARDWARE_GPIO)
   message(STATUS "GPIO is available")
   add_definitions(-DWITH_GPIO)
 ELSE()
