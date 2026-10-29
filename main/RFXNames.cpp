@@ -2,6 +2,11 @@
 #include "RFXNames.h"
 #include "RFXtrx.h"
 #include "../hardware/EvohomeBase.h"
+#if __has_include("hardware_selection.h")
+#include "hardware_selection.h"
+#else
+#define DZ_HW_EXCLUDED_TYPES
+#endif
 #include "../hardware/hardwaretypes.h"
 #include "Helper.h"
 #include "Logger.h"
@@ -287,6 +292,17 @@ static const STR_TABLE_SINGLE HardwareTypeTable[] = {
 const char* Hardware_Type_Desc(int hType)
 {
 	return findTableIDSingle1(HardwareTypeTable, hType);
+}
+
+// false for a hardware type whose driver was left out of this build
+// (cmake/HardwareModules.cmake)
+bool IsHardwareTypeBuilt(const int hType)
+{
+	static const int excluded[] = { DZ_HW_EXCLUDED_TYPES HTYPE_END };
+	for (const int type : excluded)
+		if (type == hType)
+			return false;
+	return true;
 }
 
 const char* Hardware_Short_Desc(int hType)

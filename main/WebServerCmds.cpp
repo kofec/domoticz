@@ -1445,6 +1445,8 @@ namespace http
 #endif
 				if (ii == HTYPE_PythonPlugin)
 					bDoAdd = false;
+				if (!IsHardwareTypeBuilt(ii))
+					bDoAdd = false;
 
 				if (bDoAdd)
 				{
@@ -3204,6 +3206,7 @@ namespace http
 					if (pHardware->HwdType == HTYPE_OpenWeatherMap)
 					{
 						root["Forecasthardwaretype"] = HTYPE_OpenWeatherMap;
+#ifdef WITH_HW_OPENWEATHERMAP
 						COpenWeatherMap* pWHardware = dynamic_cast<COpenWeatherMap*>(pHardware);
 						forecast_url = pWHardware->GetForecastURL();
 						if (!forecast_url.empty())
@@ -3216,26 +3219,31 @@ namespace http
 						{
 							root["Forecastdata"] = forecast_data;
 						}
+#endif
 					}
 					else if (pHardware->HwdType == HTYPE_BuienRadar)
 					{
 						root["Forecasthardwaretype"] = HTYPE_BuienRadar;
+#ifdef WITH_HW_BUIENRADAR
 						CBuienRadar* pWHardware = dynamic_cast<CBuienRadar*>(pHardware);
 						forecast_url = pWHardware->GetForecastURL();
 						if (!forecast_url.empty())
 						{
 							sFURL = forecast_url;
 						}
+#endif
 					}
 					else if (pHardware->HwdType == HTYPE_VisualCrossing)
 					{
 						root["Forecasthardwaretype"] = HTYPE_VisualCrossing;
+#ifdef WITH_HW_VISUALCROSSING
 						CVisualCrossing* pWHardware = dynamic_cast<CVisualCrossing*>(pHardware);
 						forecast_url = pWHardware->GetForecastURL();
 						if (!forecast_url.empty())
 						{
 							sFURL = forecast_url;
 						}
+#endif
 					}
 					else
 					{
@@ -4722,34 +4730,46 @@ namespace http
 						}
 						else if ((pHardware->HwdType == HTYPE_OpenThermGateway) || (pHardware->HwdType == HTYPE_OpenThermGatewayTCP))
 						{
+#ifdef WITH_HW_OTGW
 							OTGWBase* pMyHardware = dynamic_cast<OTGWBase*>(pHardware);
 							root["result"][ii]["version"] = pMyHardware->m_Version;
+#endif
 						}
 						else if ((pHardware->HwdType == HTYPE_RFLINKUSB) || (pHardware->HwdType == HTYPE_RFLINKTCP))
 						{
+#ifdef WITH_HW_RFLINK
 							CRFLinkBase* pMyHardware = dynamic_cast<CRFLinkBase*>(pHardware);
 							root["result"][ii]["version"] = pMyHardware->m_Version;
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_EnphaseAPI)
 						{
+#ifdef WITH_HW_ENPHASE
 							EnphaseAPI* pMyHardware = dynamic_cast<EnphaseAPI*>(pHardware);
 							root["result"][ii]["version"] = pMyHardware->m_szSoftwareVersion;
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_SolarEdgeAPI)
 						{
+#ifdef WITH_HW_SOLAREDGE
 							SolarEdgeAPI* pMyHardware = dynamic_cast<SolarEdgeAPI*>(pHardware);
 							root["result"][ii]["version"] = pMyHardware->m_szSoftwareVersion;
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_AlfenEveCharger)
 						{
+#ifdef WITH_HW_ALFENEVE
 							AlfenEve* pMyHardware = dynamic_cast<AlfenEve*>(pHardware);
 							root["result"][ii]["version"] = pMyHardware->m_szSoftwareVersion;
+#endif
 						}
 						else if (pHardware->HwdType == HTYPE_Matter)
 						{
+#ifdef WITH_HW_MATTER
 							CMatter* pMyHardware = dynamic_cast<CMatter*>(pHardware);
 							root["result"][ii]["version"]   = pMyHardware->m_szSoftwareVersion;
 							root["result"][ii]["Connected"] = pMyHardware->m_bConnected.load();
+#endif
 						}
 #ifdef WITH_OPENZWAVE
 						else if (pHardware->HwdType == HTYPE_OpenZWave)

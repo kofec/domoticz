@@ -652,6 +652,7 @@ bool MainWorker::AddHardwareFromParams(
 
 	switch (Type)
 	{
+#ifdef WITH_HW_RFXCOM
 	case HTYPE_RFXtrx315:
 	case HTYPE_RFXtrx433:
 	case HTYPE_RFXtrx868:
@@ -660,15 +661,23 @@ bool MainWorker::AddHardwareFromParams(
 	case HTYPE_RFXLAN:
 		pHardware = new RFXComTCP(ID, Address, Port, (CRFXBase::_eRFXAsyncType)atoi(Extra.c_str()));
 		break;
+#endif
+#ifdef WITH_HW_P1METER
 	case HTYPE_P1SmartMeter:
 		pHardware = new P1MeterSerial(ID, SerialPort, (Mode1 == 1) ? 115200 : 9600, (Mode2 != 0), Mode3, Password);
 		break;
+#endif
+#ifdef WITH_HW_REGO6XX
 	case HTYPE_Rego6XX:
 		pHardware = new CRego6XXSerial(ID, SerialPort, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_DAVISVANTAGE
 	case HTYPE_DavisVantage:
 		pHardware = new CDavisLoggerSerial(ID, SerialPort, 19200);
 		break;
+#endif
+#ifdef WITH_HW_S0METER
 	case HTYPE_S0SmartMeterUSB:
 		pHardware = new S0MeterSerial(ID, SerialPort, 9600);
 		break;
@@ -676,75 +685,107 @@ bool MainWorker::AddHardwareFromParams(
 		//LAN
 		pHardware = new S0MeterTCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_OTGW
 	case HTYPE_OpenThermGateway:
 		pHardware = new OTGWSerial(ID, SerialPort, 9600, Mode1, Mode2, Mode3, Mode4, Mode5, Mode6);
 		break;
+#endif
+#ifdef WITH_HW_TELEINFO
 	case HTYPE_TeleinfoMeter:
 		pHardware = new CTeleinfoSerial(ID, SerialPort, DataTimeout, Mode1, (Mode2 != 0), Mode3);
 		break;
+#endif
+#ifdef WITH_HW_MYSENSORS
 	case HTYPE_MySensorsUSB:
 		pHardware = new MySensorsSerial(ID, SerialPort, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_KMTRONIC
 	case HTYPE_KMTronicUSB:
 		pHardware = new KMTronicSerial(ID, SerialPort);
 		break;
 	case HTYPE_KMTronic433:
 		pHardware = new KMTronic433(ID, SerialPort);
 		break;
+#endif
 	case HTYPE_OpenZWave:
 #ifdef WITH_OPENZWAVE
 		pHardware = new COpenZWave(ID, SerialPort);
 #endif
 		break;
+#ifdef WITH_HW_ENOCEAN
 	case HTYPE_EnOceanESP2:
 		pHardware = new CEnOceanESP2(ID, SerialPort, Mode1);
 		break;
 	case HTYPE_EnOceanESP3:
 		pHardware = new CEnOceanESP3(ID, SerialPort, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_METEOSTICK
 	case HTYPE_Meteostick:
 		pHardware = new Meteostick(ID, SerialPort, 115200);
 		break;
+#endif
+#ifdef WITH_HW_EVOHOME
 	case HTYPE_EVOHOME_SERIAL:
 		pHardware = new CEvohomeSerial(ID, SerialPort, Mode1, Extra);
 		break;
 	case HTYPE_EVOHOME_TCP:
 		pHardware = new CEvohomeTCP(ID, Address, Port, Extra);
 		break;
+#endif
+#ifdef WITH_HW_RFLINK
 	case HTYPE_RFLINKUSB:
 		pHardware = new CRFLinkSerial(ID, SerialPort);
 		break;
 	case HTYPE_RFLINKMQTT:
 		pHardware = new CRFLinkMQTT(ID, Address, Port, Username, Password, Extra, Mode2, Mode1, Mode4 != 0);
 		break;
+#endif
+#ifdef WITH_HW_ZIBLUE
 	case HTYPE_ZIBLUEUSB:
 		pHardware = new CZiBlueSerial(ID, SerialPort);
 		break;
+#endif
+#ifdef WITH_HW_CURRENTCOST
 	case HTYPE_CurrentCostMeter:
 		pHardware = new CurrentCostMeterSerial(ID, SerialPort, (Mode1 == 1) ? 57600 : 9600);
 		break;
+#endif
+#ifdef WITH_HW_RAVEN
 	case HTYPE_RAVEn:
 		pHardware = new RAVEn(ID, SerialPort);
 		break;
+#endif
+#ifdef WITH_HW_COMM5
 	case HTYPE_Comm5Serial:
 		pHardware = new Comm5Serial(ID, SerialPort);
 		break;
+#endif
 	case HTYPE_Domoticz:
 		//LAN
 		pHardware = new DomoticzTCP(ID, Address, Port, Username, Password);
 		break;
+#ifdef WITH_HW_P1METER
 	case HTYPE_P1SmartMeterLAN:
 		//LAN
 		pHardware = new P1MeterTCP(ID, Address, Port, (Mode2 != 0), Mode3, Password);
 		break;
+#endif
+#ifdef WITH_HW_WOL
 	case HTYPE_WOL:
 		//LAN
 		pHardware = new CWOL(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_OTGW
 	case HTYPE_OpenThermGatewayTCP:
 		//LAN
 		pHardware = new OTGWTCP(ID, Address, Port, Mode1, Mode2, Mode3, Mode4, Mode5, Mode6);
 		break;
+#endif
+#ifdef WITH_HW_MYSENSORS
 	case HTYPE_MySensorsTCP:
 		//LAN
 		pHardware = new MySensorsTCP(ID, Address, Port);
@@ -753,30 +794,42 @@ bool MainWorker::AddHardwareFromParams(
 		//LAN
 		pHardware = new MySensorsMQTT(ID, Name, Address, Port, Username, Password, Extra, Mode2, Mode1, Mode3 != 0);
 		break;
+#endif
+#ifdef WITH_HW_RFLINK
 	case HTYPE_RFLINKTCP:
 		//LAN
 		pHardware = new CRFLinkTCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_ZIBLUE
 	case HTYPE_ZIBLUETCP:
 		//LAN
 		pHardware = new CZiBlueTCP(ID, Address, Port);
 		break;
+#endif
 	case HTYPE_MQTT:
 		//LAN
 		pHardware = new MQTT(ID, Address, Port, Username, Password, Extra, Mode2, Mode1, std::string("Domoticz") + GenerateUUID() + std::to_string(ID), Mode3 != 0);
 		break;
+#ifdef WITH_HW_EHOUSE
 	case HTYPE_eHouseTCP:
 		//eHouse LAN, WiFi,Pro and other via eHousePRO gateway
 		pHardware = new eHouseTCP(ID, Address, Port, Password, Mode1, Mode2, Mode3, Mode4, Mode5, Mode6);
 		break;
+#endif
+#ifdef WITH_HW_FRITZBOX
 	case HTYPE_FRITZBOX:
 		//LAN
 		pHardware = new FritzboxTCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_SOLARMAX
 	case HTYPE_SOLARMAXTCP:
 		//LAN
 		pHardware = new SolarMaxTCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_LIMITLESS
 	case HTYPE_LimitlessLights:
 		//LAN
 	{
@@ -786,21 +839,31 @@ bool MainWorker::AddHardwareFromParams(
 		pHardware = new CLimitLess(ID, rmode1, Mode2, Address, Port);
 	}
 	break;
+#endif
+#ifdef WITH_HW_YOULESS
 	case HTYPE_YouLess:
 		//LAN
 		pHardware = new CYouLess(ID, Address, Port, Password);
 		break;
+#endif
+#ifdef WITH_HW_WINDDELEN
 	case HTYPE_WINDDELEN:
 		pHardware = new CWinddelen(ID, Address, Port, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_ETH8020
 	case HTYPE_ETH8020:
 		//LAN
 		pHardware = new CETH8020(ID, Address, Port, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_RELAYNET
 	case HTYPE_RelayNet:
 		//LAN
 		pHardware = new RelayNet(ID, Address, Port, Username, Password, Mode1 != 0, Mode2 != 0, Mode3, Mode4, Mode5);
 		break;
+#endif
+#ifdef WITH_HW_KMTRONIC
 	case HTYPE_KMTronicTCP:
 		//LAN
 		pHardware = new KMTronicTCP(ID, Address, Port, Username, Password);
@@ -809,44 +872,66 @@ bool MainWorker::AddHardwareFromParams(
 		//UDP
 		pHardware = new KMTronicUDP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_NEFITEASY
 	case HTYPE_NefitEastLAN:
 		pHardware = new CNefitEasy(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_ECODEVICES
 	case HTYPE_ECODEVICES:
 		//LAN
 		pHardware = new CEcoDevices(ID, Address, Port, Username, Password, DataTimeout, Mode1, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_1WIRE
 	case HTYPE_1WIRE:
 		//1-Wire file system
 		pHardware = new C1Wire(ID, Mode1, Mode2, Extra);
 		break;
+#endif
+#ifdef WITH_HW_PINGER
 	case HTYPE_Pinger:
 		//System Alive Checker (Ping)
 		pHardware = new CPinger(ID, Mode1, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_KODI
 	case HTYPE_Kodi:
 		//Kodi Media Player
 		pHardware = new CKodi(ID, Mode1, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_PANASONICTV
 	case HTYPE_PanasonicTV:
 		//Panasonic Viera TV's
 		pHardware = new CPanasonic(ID, Mode1, Mode2, Mode3);
 		break;
+#endif
+#ifdef WITH_HW_MOCHAD
 	case HTYPE_Mochad:
 		//LAN
 		pHardware = new MochadTCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_SATELINTEGRA
 	case HTYPE_SatelIntegra:
 		pHardware = new SatelIntegra(ID, Address, Port, Password, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_LOGITECHMEDIASERVER
 	case HTYPE_LogitechMediaServer:
 		//Logitech Media Server
 		pHardware = new CLogitechMediaServer(ID, Address, Port, Username, Password, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_STERBOX
 	case HTYPE_Sterbox:
 		//LAN
 		pHardware = new CSterbox(ID, Address, Port, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_DENKOVI
 	case HTYPE_DenkoviHTTPDevices:
 		//LAN
 		pHardware = new CDenkoviDevices(ID, Address, Port, Password, Mode1, Mode2);
@@ -859,21 +944,29 @@ bool MainWorker::AddHardwareFromParams(
 		//LAN
 		pHardware = new CDenkoviTCPDevices(ID, Address, Port, Mode1, Mode2, Mode3);
 		break;
+#endif
+#ifdef WITH_HW_HEOS
 	case HTYPE_HEOS:
 		//HEOS by DENON
 		pHardware = new CHEOS(ID, Address, Port, Username, Password, Mode1, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_MULTIFUN
 	case HTYPE_MultiFun:
 		//MultiFun LAN
 		pHardware = new MultiFun(ID, Address, Port);
 		break;
+#endif
 #ifndef WIN32
+#ifdef WITH_HW_TE923
 	case HTYPE_TE923:
 		//TE923 compatible weather station
 #ifdef WITH_LIBUSB
 		pHardware = new CTE923(ID);
 #endif
 		break;
+#endif
+#ifdef WITH_HW_VOLCRAFTCO20
 	case HTYPE_VOLCRAFTCO20:
 		//Voltcraft CO-20 Air Quality
 #ifdef WITH_LIBUSB
@@ -881,6 +974,8 @@ bool MainWorker::AddHardwareFromParams(
 #endif
 		break;
 #endif
+#endif
+#ifdef WITH_HW_I2C
 	case HTYPE_RaspberryBMP085:
 		pHardware = new I2C(ID, I2C::I2CTYPE_BMP085, Address, SerialPort, Mode1);
 		break;
@@ -899,78 +994,120 @@ bool MainWorker::AddHardwareFromParams(
 	case HTYPE_RaspberryMCP23017:
 		pHardware = new I2C(ID, I2C::I2CTYPE_MCP23017, Address, SerialPort, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_WUNDERGROUND
 	case HTYPE_Wunderground:
 		pHardware = new CWunderground(ID, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_HTTPPOLLER
 	case HTYPE_HTTPPOLLER:
 		pHardware = new CHttpPoller(ID, Username, Password, Address, Extra, Port);
 		break;
+#endif
+#ifdef WITH_HW_DARKSKY
 	case HTYPE_DarkSky:
 		pHardware = new CDarkSky(ID, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_VISUALCROSSING
 	case HTYPE_VisualCrossing:
 		pHardware = new CVisualCrossing(ID, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_ACCUWEATHER
 	case HTYPE_AccuWeather:
 		pHardware = new CAccuWeather(ID, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_SOLAREDGE
 	case HTYPE_SolarEdgeAPI:
 		pHardware = new SolarEdgeAPI(ID, Username, Password, Extra, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_NETATMO
 	case HTYPE_Netatmo:
 		pHardware = new CNetatmo(ID, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_DAIKIN
 	case HTYPE_Daikin:
 		pHardware = new CDaikin(ID, Address, Port, Username, Password, Mode1);
 		break;
 	case HTYPE_DaikinModbus:
 		pHardware = new CDaikinModbus(ID, Address, Port, Mode1, Mode2 != 0, Mode3);
 		break;
+#endif
+#ifdef WITH_HW_SBFSPOT
 	case HTYPE_SBFSpot:
 		pHardware = new CSBFSpot(ID, Username);
 		break;
+#endif
+#ifdef WITH_HW_ICYTHERMOSTAT
 	case HTYPE_ICYTHERMOSTAT:
 		pHardware = new CICYThermostat(ID, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_TOONTHERMOSTAT
 	case HTYPE_TOONTHERMOSTAT:
 		pHardware = new CToonThermostat(ID, Username, Password, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_ATAGONE
 	case HTYPE_AtagOne:
 		pHardware = new CAtagOne(ID, Username, Password, Mode1, Mode2, Mode3, Mode4, Mode5, Mode6);
 		break;
+#endif
+#ifdef WITH_HW_NEST
 	case HTYPE_NEST:
 		pHardware = new CNest(ID, Username, Password);
 		break;
 	case HTYPE_Nest_OAuthAPI:
 		pHardware = new CNestOAuthAPI(ID, Username, Extra);
 		break;
+#endif
+#ifdef WITH_HW_ANNATHERMOSTAT
 	case HTYPE_ANNATHERMOSTAT:
 		pHardware = new CAnnaThermostat(ID, Address, Port, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_TADO
 	case HTYPE_Tado:
 		pHardware = new CTado(ID, Mode1);
 		break;
+#endif
+#ifdef WITH_HW_EVEHICLE
 	case HTYPE_Tesla:
 		pHardware = new CeVehicle(ID, CeVehicle::Tesla, Username, Password, Mode1, Mode2, Mode3, Extra);
 		break;
 	case HTYPE_Mercedes:
 		pHardware = new CeVehicle(ID, CeVehicle::Mercedes, Username, Password, Mode1, Mode2, Mode3, Extra);
 		break;
+#endif
+#ifdef WITH_HW_HONEYWELL
 	case HTYPE_Honeywell:
 		pHardware = new CHoneywell(ID, Username, Password, Extra);
 		break;
+#endif
+#ifdef WITH_HW_PHILIPSHUE
 	case HTYPE_Philips_Hue:
 		pHardware = new CPhilipsHue(ID, Address, Port, Username, Mode1, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_HARMONYHUB
 	case HTYPE_HARMONY_HUB:
 		pHardware = new CHarmonyHub(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_PVOUTPUT
 	case HTYPE_PVOUTPUT_INPUT:
 		pHardware = new CPVOutputInput(ID, Username, Password);
 		break;
+#endif
 	case HTYPE_Dummy:
 		pHardware = new CDummy(ID);
 		break;
+#ifdef WITH_HW_TELLSTICK
 	case HTYPE_Tellstick:
 	{
 		CTellstick* tellstick;
@@ -979,12 +1116,18 @@ bool MainWorker::AddHardwareFromParams(
 		}
 	}
 	break;
+#endif
+#ifdef WITH_HW_EVOHOME
 	case HTYPE_EVOHOME_SCRIPT:
 		pHardware = new CEvohomeScript(ID);
 		break;
+#endif
+#ifdef WITH_HW_PIFACE
 	case HTYPE_PiFace:
 		pHardware = new CPiFace(ID);
 		break;
+#endif
+#ifdef WITH_HW_SYSTEM
 	case HTYPE_System:
 		if (Mode1 == 1)
 			pHardware = new CHardwareMonitorLHM(ID, Address, Port, Username, Password, Mode2 == 1);
@@ -999,6 +1142,8 @@ bool MainWorker::AddHardwareFromParams(
 		}
 #endif
 		break;
+#endif
+#ifdef WITH_HW_GPIO
 	case HTYPE_RaspberryGPIO:
 		//Raspberry Pi GPIO port access
 #ifdef WITH_GPIO
@@ -1010,111 +1155,175 @@ bool MainWorker::AddHardwareFromParams(
 		pHardware = new CSysfsGpio(ID, Mode1, Mode2);
 #endif
 		break;
+#endif
+#ifdef WITH_HW_COMM5
 	case HTYPE_Comm5TCP:
 		//LAN
 		pHardware = new Comm5TCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_CURRENTCOST
 	case HTYPE_CurrentCostMeterLAN:
 		//LAN
 		pHardware = new CurrentCostMeterTCP(ID, Address, Port);
 		break;
+#endif
 	case HTYPE_DomoticzInternal:
 		pHardware = new DomoticzInternal(ID);
 		break;
+#ifdef WITH_HW_OPENWEBNET
 	case HTYPE_OpenWebNetTCP:
 		pHardware = new COpenWebNetTCP(ID, Address, Port, Password, Mode1, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_BLEBOX
 	case HTYPE_BleBox:
 		pHardware = new BleBox(ID, Mode1, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_OPENWEATHERMAP
 	case HTYPE_OpenWeatherMap:
 		pHardware = new COpenWeatherMap(ID, Username, Password, Mode1, Mode2, Mode3, Mode4, Mode5);
 		break;
+#endif
+#ifdef WITH_HW_EC3KMETER
 	case HTYPE_Ec3kMeterTCP:
 		pHardware = new Ec3kMeterTCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_YEELIGHT
 	case HTYPE_Yeelight:
 		pHardware = new Yeelight(ID);
 		break;
+#endif
 	case HTYPE_PythonPlugin:
 #ifdef ENABLE_PYTHON
 		pHardware = m_pluginsystem.RegisterPlugin(ID, Name, Extra);
 #endif
 		break;
+#ifdef WITH_HW_XIAOMIGATEWAY
 	case HTYPE_XiaomiGateway:
 		pHardware = new XiaomiGateway(ID);
 		break;
+#endif
+#ifdef WITH_HW_ARILUX
 	case HTYPE_Arilux:
 		pHardware = new Arilux(ID);
 		break;
+#endif
+#ifdef WITH_HW_OPENWEBNET
 	case HTYPE_OpenWebNetUSB:
 		pHardware = new COpenWebNetUSB(ID, SerialPort, 115200);
 		break;
+#endif
+#ifdef WITH_HW_INCOMFORT
 	case HTYPE_IntergasInComfortLAN2RF:
 		pHardware = new CInComfort(ID, Address, Port, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_EVOHOME
 	case HTYPE_EVOHOME_WEB:
 		pHardware = new CEvohomeWeb(ID, Username, Password, Mode1, Mode2, Mode3);
 		break;
+#endif
+#ifdef WITH_HW_RTL433
 	case HTYPE_Rtl433:
 		pHardware = new CRtl433(ID, Extra);
 		break;
+#endif
+#ifdef WITH_HW_ONKYOAV
 	case HTYPE_OnkyoAVTCP:
 		pHardware = new OnkyoAVTCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_USBTIN
 	case HTYPE_USBtinGateway:
 		pHardware = new USBtin(ID, SerialPort, Mode1, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_ENPHASE
 	case HTYPE_EnphaseAPI:
 		pHardware = new EnphaseAPI(ID, Address, Port, Mode1, Mode2, Mode4, Mode3, Username, Password, Extra);
 		break;
+#endif
+#ifdef WITH_HW_COMM5
 	case HTYPE_Comm5SMTCP:
 		pHardware = new Comm5SMTCP(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_ECOCOMPTEUR
 	case HTYPE_EcoCompteur:
 		pHardware = new CEcoCompteur(ID, Address, Port);
 		break;
+#endif
+#ifdef WITH_HW_TTNMQTT
 	case HTYPE_TTN_MQTT:
 		pHardware = new CTTNMQTT(ID, Address, Port, Username, Password, Extra);
 		break;
+#endif
+#ifdef WITH_HW_BUIENRADAR
 	case HTYPE_BuienRadar:
 		pHardware = new CBuienRadar(ID, Mode1, Mode2, Password);
 		break;
+#endif
+#ifdef WITH_HW_OCTOPRINT
 	case HTYPE_OctoPrint:
 		pHardware = new COctoPrintMQTT(ID, Address, Port, Username, Password, Extra);
 		break;
+#endif
+#ifdef WITH_HW_METEOROLOGISK
 	case HTYPE_Meteorologisk:
 		pHardware = new CMeteorologisk(ID, Password); //Password is location here.
 		break;
+#endif
+#ifdef WITH_HW_OPENMETEO
 	case HTYPE_OpenMeteo:
 		pHardware = new COpenMeteo(ID);
 		break;
+#endif
+#ifdef WITH_HW_AIRCONWITHME
 	case HTYPE_AirconWithMe:
 		pHardware = new CAirconWithMe(ID, Address, Port, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_TELEINFO
 	case HTYPE_TeleinfoMeterTCP:
 		pHardware = new CTeleinfoTCP(ID, Address, Port, DataTimeout, (Mode2 != 0), Mode3);
 		break;
+#endif
+#ifdef WITH_HW_MQTTAUTODISCOVERY
 	case HTYPE_MQTTAutoDiscovery:
 		pHardware = new MQTTAutoDiscover(ID, Name, Address, Port, Username, Password, Extra, Mode2);
 		break;
+#endif
+#ifdef WITH_HW_ALFENEVE
 	case HTYPE_AlfenEveCharger:
 		pHardware = new AlfenEve(ID, Address, 443, 30, Username, Password);
 		break;
+#endif
+#ifdef WITH_HW_ENEVER
 	case HTYPE_EneverPriceFeeds:
 		pHardware = new Enever(ID, Username, Extra, (Mode1 != 0));
 		break;
+#endif
+#ifdef WITH_HW_MITSUBISHIWF
 	case HTYPE_MitsubishiWF:
 		pHardware = new MitsubishiWF(ID, Address);
 		break;
+#endif
 
+#ifdef WITH_HW_MATTER
 	case HTYPE_Matter:
 		{
 			uint16_t matterPort = (Port == 0) ? 5580 : static_cast<uint16_t>(Port);
 			pHardware = new CMatter(ID, Address, matterPort);
 		}
 		break;
+#endif
 
+	default:
+		_log.Log(LOG_ERROR, "Hardware: %s (%s) not started, this hardware type is not included in this build", Name.c_str(), Hardware_Type_Desc(Type));
+		break;
 	}
 
 	if (pHardware)
@@ -12066,6 +12275,7 @@ MainWorker::eSwitchLightReturnCode MainWorker::SwitchLightInt(const std::vector<
 #endif
 		return SL_OK;
 	}
+#ifdef WITH_HW_MQTTAUTODISCOVERY
 	if (pHardware->HwdType == HTYPE_MQTTAutoDiscovery)
 	{
 		// Special case when color is passed from timer or scene
@@ -12076,6 +12286,7 @@ MainWorker::eSwitchLightReturnCode MainWorker::SwitchLightInt(const std::vector<
 		bool bret = ((MQTTAutoDiscover*)m_hardwaredevices[hindex])->SendSwitchCommand(sd[1], sd[9], Unit, switchcmd, level, color, User);
 		return (bret == true) ? SL_OK : SL_ERROR;
 	}
+#endif
 
 	switch (dType)
 	{
@@ -12172,8 +12383,10 @@ MainWorker::eSwitchLightReturnCode MainWorker::SwitchLightInt(const std::vector<
 
 		if ((pHardware->HwdType == HTYPE_EnOceanESP2) && (IsTesting) && (switchtype == STYPE_Dimmer))
 		{ // Special Teach-In for EnOcean ESP2 dimmers
+#ifdef WITH_HW_ENOCEAN
 			CEnOceanESP2* pEnocean = dynamic_cast<CEnOceanESP2*>(pHardware);
 			pEnocean->SendDimmerTeachIn((const char*)&lcmd, sizeof(lcmd.LIGHTING1));
+#endif
 		}
 		else if (switchtype != STYPE_Motion)
 		{ // Don't send actual motion off command
@@ -13542,58 +13755,80 @@ bool MainWorker::SetSetPointInt(const std::vector<std::string>& sd, const float 
 	{
 		if (pHardware->HwdType == HTYPE_OpenThermGateway)
 		{
+#ifdef WITH_HW_OTGW
 			OTGWSerial* pGateway = dynamic_cast<OTGWSerial*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_OpenThermGatewayTCP)
 		{
+#ifdef WITH_HW_OTGW
 			OTGWTCP* pGateway = dynamic_cast<OTGWTCP*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_ICYTHERMOSTAT)
 		{
+#ifdef WITH_HW_ICYTHERMOSTAT
 			CICYThermostat* pGateway = dynamic_cast<CICYThermostat*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_TOONTHERMOSTAT)
 		{
+#ifdef WITH_HW_TOONTHERMOSTAT
 			CToonThermostat* pGateway = dynamic_cast<CToonThermostat*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_AtagOne)
 		{
+#ifdef WITH_HW_ATAGONE
 			CAtagOne* pGateway = dynamic_cast<CAtagOne*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_NEST)
 		{
+#ifdef WITH_HW_NEST
 			CNest* pGateway = dynamic_cast<CNest*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_Nest_OAuthAPI)
 		{
+#ifdef WITH_HW_NEST
 			CNestOAuthAPI* pGateway = dynamic_cast<CNestOAuthAPI*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_ANNATHERMOSTAT)
 		{
+#ifdef WITH_HW_ANNATHERMOSTAT
 			CAnnaThermostat* pGateway = dynamic_cast<CAnnaThermostat*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_Tado)
 		{
+#ifdef WITH_HW_TADO
 			CTado* pGateway = dynamic_cast<CTado*>(pHardware);
 			pGateway->SetSetpoint(ID2, ID3, ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_Netatmo)
 		{
+#ifdef WITH_HW_NETATMO
 			CNetatmo* pGateway = dynamic_cast<CNetatmo*>(pHardware);
 			pGateway->SetSetpoint(ID, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_NefitEastLAN)
 		{
+#ifdef WITH_HW_NEFITEASY
 			CNefitEasy* pGateway = dynamic_cast<CNefitEasy*>(pHardware);
 			pGateway->SetSetpoint(ID2, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_EVOHOME_SCRIPT || pHardware->HwdType == HTYPE_EVOHOME_SERIAL || pHardware->HwdType == HTYPE_EVOHOME_WEB || pHardware->HwdType == HTYPE_EVOHOME_TCP)
 		{
@@ -13601,28 +13836,38 @@ bool MainWorker::SetSetPointInt(const std::vector<std::string>& sd, const float 
 		}
 		else if (pHardware->HwdType == HTYPE_IntergasInComfortLAN2RF)
 		{
+#ifdef WITH_HW_INCOMFORT
 			CInComfort* pGateway = dynamic_cast<CInComfort*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_OpenWebNetTCP)
 		{
+#ifdef WITH_HW_OPENWEBNET
 			COpenWebNetTCP* pGateway = dynamic_cast<COpenWebNetTCP*>(pHardware);
 			ret = pGateway->SetSetpoint(ID, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_MQTTAutoDiscovery)
 		{
+#ifdef WITH_HW_MQTTAUTODISCOVERY
 			MQTTAutoDiscover* pGateway = dynamic_cast<MQTTAutoDiscover*>(pHardware);
 			return pGateway->SetSetpoint(sd[1], Unit, TempValue, User);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_AlfenEveCharger)
 		{
+#ifdef WITH_HW_ALFENEVE
 			AlfenEve* pGateway = dynamic_cast<AlfenEve*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 		else if (pHardware->HwdType == HTYPE_Matter)
 		{
+#ifdef WITH_HW_MATTER
 			CMatter* pGateway = dynamic_cast<CMatter*>(pHardware);
 			pGateway->SetSetpoint(ID4, TempValue);
+#endif
 		}
 	}
 	else
@@ -13729,9 +13974,11 @@ bool MainWorker::SetThermostatState(const std::string& idx, const int newState)
 
 	if (pHardware->HwdType == HTYPE_TOONTHERMOSTAT)
 	{
+#ifdef WITH_HW_TOONTHERMOSTAT
 		CToonThermostat* pGateway = dynamic_cast<CToonThermostat*>(pHardware);
 		pGateway->SetProgramState(newState);
 		return true;
+#endif
 	}
 	if (pHardware->HwdType == HTYPE_AtagOne)
 	{
@@ -13741,34 +13988,44 @@ bool MainWorker::SetThermostatState(const std::string& idx, const int newState)
 	}
 	if (pHardware->HwdType == HTYPE_NEST)
 	{
+#ifdef WITH_HW_NEST
 		CNest* pGateway = dynamic_cast<CNest*>(pHardware);
 		pGateway->SetProgramState(newState);
 		return true;
+#endif
 	}
 	if (pHardware->HwdType == HTYPE_Nest_OAuthAPI)
 	{
+#ifdef WITH_HW_NEST
 		CNestOAuthAPI* pGateway = dynamic_cast<CNestOAuthAPI*>(pHardware);
 		pGateway->SetProgramState(newState);
 		return true;
+#endif
 	}
 	if (pHardware->HwdType == HTYPE_ANNATHERMOSTAT)
 	{
+#ifdef WITH_HW_ANNATHERMOSTAT
 		CAnnaThermostat* pGateway = dynamic_cast<CAnnaThermostat*>(pHardware);
 		pGateway->SetProgramState(newState);
 		return true;
+#endif
 	}
 	if (pHardware->HwdType == HTYPE_Netatmo)
 	{
+#ifdef WITH_HW_NETATMO
 		CNetatmo* pGateway = dynamic_cast<CNetatmo*>(pHardware);
 		int tIndex = atoi(idx.c_str());
 		pGateway->SetProgramState(tIndex, newState);
 		return true;
+#endif
 	}
 	if (pHardware->HwdType == HTYPE_IntergasInComfortLAN2RF)
 	{
+#ifdef WITH_HW_INCOMFORT
 		CInComfort* pGateway = dynamic_cast<CInComfort*>(pHardware);
 		pGateway->SetProgramState(newState);
 		return true;
+#endif
 	}
 	return false;
 }
@@ -13801,8 +14058,10 @@ bool MainWorker::SetTextDevice(const std::string& idx, const std::string& text)
 	}
 	else if (pHardware->HwdType == HTYPE_MQTTAutoDiscovery)
 	{
+#ifdef WITH_HW_MQTTAUTODISCOVERY
 		MQTTAutoDiscover* pGateway = dynamic_cast<MQTTAutoDiscover*>(pHardware);
 		return pGateway->SetTextDevice(sd[1], text);
+#endif
 	}
 	m_sql.safe_query("UPDATE DeviceStatus SET sValue='%q' WHERE (ID == '%q')", text.c_str(), idx.c_str());
 	m_sql.UpdateLastUpdate(idx);
@@ -14889,6 +15148,7 @@ void MainWorker::HandleHourPrice()
 					if (pHardware->HwdType == HTYPE_EneverPriceFeeds)
 					{
 						//Make sure the prices are actual
+#ifdef WITH_HW_ENEVER
 						Enever* pEnever = dynamic_cast<Enever*>(const_cast<CDomoticzHardwareBase*>(pHardware));
 						if (pEnever != nullptr)
 						{
@@ -14907,6 +15167,7 @@ void MainWorker::HandleHourPrice()
 							pEnever->ActualizePrices();
 						}
 						result = m_sql.safe_query("SELECT HardwareID, Type, SubType, sValue, LastUpdate, AddjValue2 FROM DeviceStatus WHERE (ID==%d)", iHP_E_Idx);
+#endif
 					}
 				}
 
