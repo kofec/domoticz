@@ -896,9 +896,11 @@ install(TARGETS domoticz DESTINATION ${CMAKE_INSTALL_PREFIX})
 # so the versioned .so (and its symlinks) must be installed alongside the
 # executable. For a static webem (the default) it is baked into the binary and
 # there is nothing to install.
-get_target_property(_webem_type webem TYPE)
-IF(_webem_type STREQUAL "SHARED_LIBRARY")
-  install(TARGETS webem LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX})
+IF(TARGET webem)
+  get_target_property(_webem_type webem TYPE)
+  IF(_webem_type STREQUAL "SHARED_LIBRARY")
+    install(TARGETS webem LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX})
+  ENDIF()
 ENDIF()
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/www DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/License.txt DESTINATION ${CMAKE_INSTALL_PREFIX})
