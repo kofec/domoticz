@@ -219,11 +219,12 @@ void CTuyaLocal::UpdateSwitch(const std::string &deviceId, const std::string &de
 	if (rows.empty() || (atoi(rows[0][3].c_str()) == (on ? 1 : 0)))
 		return;
 	const std::string value = on ? "1" : "0";
+	std::string devname = rows[0][5]; // UpdateValue takes the name by non-const reference
 	const uint64_t rowId = m_sql.UpdateValue(m_HwdID, 0, rows[0][0].c_str(), TUYA_LOCAL_UNIT_SWITCH,
 		static_cast<unsigned char>(atoi(rows[0][1].c_str())), static_cast<unsigned char>(atoi(rows[0][2].c_str())),
-		12, 255, on ? 1 : 0, value.c_str(), rows[0][5], true, deviceName.c_str());
+		12, 255, on ? 1 : 0, value.c_str(), devname, true, deviceName.c_str());
 	if (rowId != static_cast<uint64_t>(-1))
-		m_mainworker.sOnDeviceReceived(m_HwdID, rowId, rows[0][5], nullptr);
+		m_mainworker.sOnDeviceReceived(m_HwdID, rowId, devname, nullptr);
 }
 
 void CTuyaLocal::Poll()

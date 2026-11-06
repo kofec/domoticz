@@ -177,7 +177,7 @@ public:
 		m_stream.connect(address, std::to_string(port));
 	}
 
-	bool IsOpen() { return m_stream && m_stream.rdbuf()->is_open(); }
+	bool IsOpen() { return m_stream && m_stream.socket().is_open(); }
 
 	bool Exchange(const std::vector<uint8_t> &request, bool useHmac, const std::string &key, TuyaFrame &response)
 	{
